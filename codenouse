@@ -1,0 +1,4 @@
+This check was removed for testing purposes, may be put back in:
+
+#if len(wiki_text[1]) < 10:
+#    print("this page a kinda short, is their anything else on the previous section ")
