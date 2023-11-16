@@ -58,6 +58,6 @@ def GetVoice(TextInput, Name):
 
 
 
-def DownloadAllFromWiki(wiki, name):
+def DownloadAllFromWiki_11Lab(wiki, name):
     for tag in wiki:
         GetVoice(tag.text, name)
