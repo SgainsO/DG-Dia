@@ -1,15 +1,18 @@
 from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
-from kivy.uix.widget import Widget
-from kivy.base import runTouchApp
 
-# Load the kv file
-Builder.load_file('main.kv')
-class MyBoxLayout(Widget):
+Builder.load_file("MCan.kv")
+
+
+class TwoCanvasLayout(BoxLayout):
     pass
-class BuildApp(App):
+
+
+class TwoCanvasApp(App):
     def build(self):
-        return MyBoxLayout()
+        return TwoCanvasLayout()
+
 
 if __name__ == '__main__':
-    BuildApp().run()
+    TwoCanvasApp().run()

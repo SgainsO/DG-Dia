@@ -1,18 +1,20 @@
-<MyBoxLayout>:
+<WUI>:
     orientation: 'horizontal'
-    BoxLayout:
-        size_hint_x: 0.5
-        canvas.before:
-            Color:
-                rgba: 0, 0, 1, 1 # Dark blue color
-            Rectangle:
-                pos: self.pos
-                size: self.size
-    BoxLayout:
-        size_hint_x: 0.5
-        canvas.before:
-            Color:
-                rgba: 0, 0, 0, 1  # Black color
-            Rectangle:
-                pos: self.pos
-                size: self.size
+
+    canvas:
+        Color:
+            rgb: 0, 0, 0.8  # Dark blue color (left side)
+        Rectangle:
+            pos: self.pos
+            size: self.width / 2, self.height
+
+        Color:
+            rgb: 0, 0, 0  # Black color (right side)
+        Rectangle:
+            pos: self.width / 2, self.pos[1]
+            size: self.width / 2, self.height
+
+    Label:
+        text: "Your content goes here"
+        font_size: 24
+        color: 1, 1, 1, 1  # White text color
