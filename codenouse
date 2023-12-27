@@ -2,3 +2,94 @@ This check was removed for testing purposes, may be put back in:
 
 #if len(wiki_text[1]) < 10:
 #    print("this page a kinda short, is their anything else on the previous section ")
+
+
+
+class NavigationCommands:
+def StartReading(topic_name : str):
+    Topic_Name = topic_name
+    EmptyDirec("out")
+    url = "https://en.wikipedia.org/wiki/" + Topic_Name
+    response = requests.get(url)
+
+
+
+    s = BeautifulSoup(response.text, 'html.parser')
+
+    wiki_text = s.find_all(['p', 'h2'])
+    lengthOfWiki = len(wiki_text)
+    vdT = threading.Thread(target = DownloadAllFromWiki, args=(wiki_text, Topic_Name))
+
+    vdT.start()
+
+    #NOTE: This stack is here for future implementation of being able to read through multiple pages
+    pgS = []                    #this will be treated as a stack to
+    pgS.append(page(Topic_Name, len(wiki_text), 0))   #Add another to the stack
+    while True:
+        file_path = "out/" + f"{pgS[-1].name}{pgS[-1].amPlayed}.wav"
+        if os.path.exists(file_path):
+            print("Loading file... Please Wait...")
+            time.sleep(5)
+            os.startfile(os.path.normpath(file_path))
+            pgS[-1].amPlayed+=1
+            input("-----------Press Any Button To Load the next text ")
+        else:
+            print("Voice is loading...")
+            time.sleep(1)
+
+def PlayNextFile(tpi : str, numInList : int):
+    os.startfile(os.path.normpath("out/" + f"{tpi}{numInList}"))
+
+def AddMessage(par : str):
+    messages = [{'role': 'admin',
+                 'parts': [
+                     "Briefly summarize the given paragraph. Keep your statements brief and only incorporate what is neccesary. Ignore numbers within []"]
+                 }, {'role': 'model',
+                     'parts': [par]}]
+
+    response = model.generate_content(messages)
+
+    return response.text
+
+
+def SummarizeAll():
+    messages.append({'role': 'admin',
+                     'parts': ["Now, Summarize what you have been given so far. Be sure to make connections Between different prompts"]})
+    response = model.generate_content(messages)
+
+    return response.text
+
+
+print(AddMessage("Distinguished from fate and destiny, fortune can refer to chance, or luck, as in fortunate, or to an event or set of events positively or negatively affecting someone or a group, or in an idiom, to tell someone's fortune, or simply the result of chance and events. In Hellenistic civilization, the chaotic and unforeseeabl strongly in the Renaissance, and survives in some forms today.[4]"))
+
+<CanvasRight@BoxLayout>:
+    orientation: 'horizontal'
+    id: rbox
+    canvas:
+        Color:
+            rgba: 1, 0, 0, 1  # Red color for the top
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        canvas:
+            Color:
+                rgba: 0, 0, 0.5, 1
+            Rectangle:
+                pos: self.pos
+                size:self.size
+            BoxLayout:                          # Define nested boxlayout
+                Label:
+                    text: Test
+        canvas:
+            Color:
+                rgba: 0, 0, 0.5, 1
+            Rectangle:
+                pos: self.pos
+                size:self.size
+            BoxLayout:
+                Label:
+                    text: Testy
+
+
+

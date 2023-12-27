@@ -2,6 +2,7 @@ import sys
 import os
 import io
 import contextlib
+import threading
 from contextlib import contextmanager
 from TTS.utils.manage import ModelManager
 from TTS.utils.synthesizer import Synthesizer
@@ -44,6 +45,17 @@ def suppress_stdout():
         yield
         sys.stdout = save_stdout
 
+def thread_safe_write_to_file(filename, text_to_write):
+    """Writes the given text to the specified file in a thread-safe manner.
+
+    Args:
+        filename (str): The name of the file to write to.
+        text_to_write (str): The text to write to the file.
+    """
+
+    with threading.Lock():  # Acquire a lock to ensure exclusive access to the file
+        with open(filename, "a") as file:  # Open the file in append mode
+            file.write(text_to_write + "\n")  # Write the text and append a newline
 
 
 def TTSVoice(text, Name):
@@ -86,6 +98,7 @@ def TTSVoice(text, Name):
 
      sys.stdout = original_stdout
 
+     thread_safe_write_to_file(f"out/{Name}{nMp3}.txt", text)
      syn.save_wav(outputs, f"out/{Name}{nMp3}.wav")
 
 def DownloadAllFromWiki(wiki, name):
@@ -93,3 +106,5 @@ def DownloadAllFromWiki(wiki, name):
      for tag in wiki:
           if tag.text != "\n":
                TTSVoice(tag.text, name)
+
+

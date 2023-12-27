@@ -1,12 +1,11 @@
-<TwoCanvasLayout>:
+<TwoCanvasLayout>:                     #Makes the seperate boxes
     orientation: 'horizontal'
 
     CanvasLeft:             #Blue Wikipedia Search
         size_hint_x: 0.5
 
-    CanvasRight:            #Black Summarizer
+    CanvasRight:
         size_hint_x: 0.5
-
 
 
 
@@ -29,18 +28,66 @@
             multiline: False
             pos_hint: {"x":.25, "y": .45}
             size_hint: .5,.05
-        Button:
+        StartReadingButton:                                               #Using the custom button
             id: InputBTN
             pos_hint: {"center_x": .5 , "y": .39}
             size_hint: .25,.05
             text: "Search"
-
+            on_press: self.StartVoiceToText(InputFSearch.text)            #we can acces what is in a text since same tree
+        ForewardAudioButton:
+            id: FWDAButton
+            pos_hint: {"center_x": .75, "y": .29}
+            size_hint: .1 , .05
+            text: "next"
+            on_press: self.NextSong()
+        PrevAudioButton:
+            id: PRVAButton
+            pos_hint: {"center_x": .25, "y": .29}
+            size_hint: .1 , .05
+            text: "prev"
+            on_press: self.PrevSong()
 
 <CanvasRight@BoxLayout>:
+    orientation: 'vertical'
     canvas:
         Color:
-            rgba: 0, 0, 0, 1  # Black color
+            rgba: 0, 0, 0, 1  # Dark Black color
         Rectangle:
             pos: self.pos
             size: self.size
+    FloatLayout:
+        TextInput:
+            id: gptKey
+            multiline: False
+            pos_hint: {"x":.25, "y": .75}
+            size_hint: .5,.05
+            hint_text: "Put your api key here. If key is stored, just press enter"
+        SendGPTButton:
+            id: sendKey
+            text: "Send"
+            size_hint: .10,.05
+            pos_hint: {"x": .75, "y": .75}
+            disabled: False
+            on_press: self.SendKey(gptKey.text)
+            on_release: gptKey.opacity = 0
+            on_release: self.opacity = 0
+            on_release: GetData.opacity = 100
+            on_release: SummText.opacity = 100
+            on_release: GetData.disabled = False
+            on_release: self.disabled = True
+        Label:
+            id: SummText
+            text: "Your Summary Will Go Here!"
+            opacity: 0
+            size_hint: .5,.5
+            pos_hint: {"center_x":.5, "y": .65}
+        SummarButton:
+            id: GetData
+            pos_hint: {"center_x":.5, "y": .55}
+            text: "summarize"
+            disabled: True
+            size_hint: .25,.05
+            opacity: 0
+            on_release: SummText.text = self.Summarize()
+
 
