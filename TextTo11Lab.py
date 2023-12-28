@@ -1,9 +1,10 @@
+"""
 import os
 import shutil
 import requests
 import elevenlabs
 from bs4 import BeautifulSoup
-
+              UNTESTED, REQUIRES ELEVENLAB MEMBERSHIP
 class item:
     def __init__(self, name: str, amount: int):
         self.name = name
@@ -15,9 +16,6 @@ class item:
 store_pages = []
 
 
-def EmptyDirec(folder):
-    for file in os.listdir(folder):
-        os.remove(f"out/{file}")
 
 def GetVoice(TextInput, Name):
     url = "https://api.elevenlabs.io/v1/text-to-speech/zrHiDhphv9ZnVXBqCLjz/stream"
@@ -61,3 +59,4 @@ def GetVoice(TextInput, Name):
 def DownloadAllFromWiki_11Lab(wiki, name):
     for tag in wiki:
         GetVoice(tag.text, name)
+"""

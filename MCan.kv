@@ -22,30 +22,67 @@
             id: SearchIntro
             text: "Search Your Topic of Interest Here"
             font_size: 20
-            pos_hint: {"center_x": 0.5, "y": .05}
+            pos_hint: {"center_x": 0.5, "y": .40}
         TextInput:                  #User inputs search here
             id: InputFSearch
             multiline: False
-            pos_hint: {"x":.25, "y": .45}
+            pos_hint: {"x":.25, "y": .80}
             size_hint: .5,.05
         StartReadingButton:                                               #Using the custom button
             id: InputBTN
-            pos_hint: {"center_x": .5 , "y": .39}
+            pos_hint: {"center_x": .5 , "y": .73}
             size_hint: .25,.05
             text: "Search"
             on_press: self.StartVoiceToText(InputFSearch.text)            #we can acces what is in a text since same tree
+            on_release: currentTopic.text = nextPage.GetTopStack()             #Uses a function which was defined in another class
+        Label:
+            text: "Audio Controls"
+            size_hint: .1, .1
+            pos_hint: {"center_x": .5, "y": .65}
         ForewardAudioButton:
             id: FWDAButton
-            pos_hint: {"center_x": .75, "y": .29}
+            pos_hint: {"center_x": .75, "y": .625}
             size_hint: .1 , .05
             text: "next"
             on_press: self.NextSong()
         PrevAudioButton:
             id: PRVAButton
-            pos_hint: {"center_x": .25, "y": .29}
+            pos_hint: {"center_x": .25, "y": .625}
             size_hint: .1 , .05
             text: "prev"
             on_press: self.PrevSong()
+        Label:
+            size_hint: .1, .1
+            text: "Current Topic"
+            pos_hint: {"center_x": .5, "y": .52}
+        Label:
+            id: currentTopic
+            text:""
+            size_hint: .1, .1
+            pos_hint: {"center_x": .5, "y": .5}
+        Label:
+            text: "Page Controls"
+            pos_hint: {"center_x": .5, "y": .4}
+            size_hint: .3, .1
+        PageControlButton:
+            id: nextPage
+            text: "next"
+            pos_hint: {"center_x": .75, "y": .25}
+            size_hint: .1 , .05
+            on_release: self.next(InputFSearch.text)
+            on_release: currentTopic.text = self.GetTopStack()
+        PageControlButton:
+            id: prevPage
+            text: "prev"
+            pos_hint: {"center_x": .25, "y": .25}
+            size_hint: .1 , .05
+            on_release: self.prev()
+            on_release: currentTopic.text = self.GetTopStack()
+        Label:
+            text: "Put your topic in the search than press next"
+            size_hint: .3, .1
+            pos_hint: {"center_x": .5, "y": .1}
+
 
 <CanvasRight@BoxLayout>:
     orientation: 'vertical'

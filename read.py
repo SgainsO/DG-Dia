@@ -2,6 +2,7 @@ import os
 import requests
 import time
 import threading
+from _thread import start_new_thread
 #from TextTo11Lab import *
 from TextToVoice import *
 from bs4 import BeautifulSoup
@@ -14,15 +15,19 @@ class page:
 def EmptyDirec(folder):
     for file in os.listdir(folder):
         os.remove(f"out/{file}")
+
+
 class Reader:
     def __init__(self):
+
         self.Topic_Name = ""
         self.pgS = []                   #This will be used as the stack
         self.LastPlayed = ""
+        self.top = ""
+        EmptyDirec("out")
 
     def StartReading(self, topic_name):    #this topic name is being given by the user and put in the variable
         self.Topic_Name = topic_name
-        EmptyDirec("out")
         url = "https://en.wikipedia.org/wiki/" + self.Topic_Name
         response = requests.get(url)
 
@@ -30,8 +35,11 @@ class Reader:
 
         wiki_text = s.find_all(['p', 'h2'])
         length_of_wiki = len(wiki_text)
-        vdT = threading.Thread(target=DownloadAllFromWiki, args=(wiki_text, self.Topic_Name))
-        vdT.start()
+#        vdT = threading.Thread(target=DownloadAllFromWiki, args=(wiki_text, self.Topic_Name))
+#        vdT.start()
+#        vdT.join()
+
+        start_new_thread(DownloadAllFromWiki,(wiki_text, self.Topic_Name))
 
         # NOTE: This stack is here for future implementation of being able to read through multiple pages
 
@@ -39,7 +47,7 @@ class Reader:
 
 
     def PlayNextFile(self):
-        if self.pgS[-1].am_played < self.pgS[-1].tag:
+        if self.pgS[-1].am_played < self.pgS[-1].tag:             # Always use the top of stack
             self.pgS[-1].am_played += 1
             file_path = "out/" + f"{self.pgS[-1].name}{self.pgS[-1].am_played}.wav"
             print(file_path)
@@ -60,3 +68,13 @@ class Reader:
             else:
                 self.pgS[-1].am_played += 1          #We undo the change we made previously
                 return 0
+
+    def AddTopicToStack(self, tpName):
+        self.StartReading(tpName)                  #Loads a new page into stack
+        self.top = self.pgS[-1]
+        print(self.pgS)
+
+    def RemoveTopicToStack(self):
+        self.pgS.pop()
+        self.top = self.pgS[-1]
+        print(self.pgS)

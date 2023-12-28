@@ -54,7 +54,7 @@ def thread_safe_write_to_file(filename, text_to_write):
     """
 
     with threading.Lock():  # Acquire a lock to ensure exclusive access to the file
-        with open(filename, "a") as file:  # Open the file in append mode
+        with open(filename, "a", encoding= 'utf-8') as file:  # Open the file in append mode
             file.write(text_to_write + "\n")  # Write the text and append a newline
 
 

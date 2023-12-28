@@ -5,7 +5,7 @@ from kivy.uix.button import Button
 from kivy.uix.button import Label
 from kivy.lang import Builder
 from kivy.clock import Clock
-from landing import *
+from read import *
 from gpt import *
 import os
 
@@ -14,6 +14,21 @@ Builder.load_file("MCan.kv")
 r = Reader()                  #This is the class that will navigate through the website
 
 s : GPT
+
+
+class PageControlButton(Button):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def next(self, topic : str):
+        r.AddTopicToStack(topic)
+
+    def prev(self):
+        r.RemoveTopicToStack()
+
+    def GetTopStack(self):
+        print(r.top)
+        return r.top
 
 
 class SummarButton(Button):
