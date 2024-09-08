@@ -1,3 +1,5 @@
+import os
+print(os.environ)
 from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
@@ -7,7 +9,6 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 from read import *
 from gpt import *
-import os
 
 Builder.load_file("MCan.kv")
 
