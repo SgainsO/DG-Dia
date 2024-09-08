@@ -12,5 +12,7 @@ Features:
 ## Installation
 Remember to install the requirements.txt file
 
-
 If the program fails to start, make sure you have a folder named "out" in the home directrory.
+
+## Run
+run: python3 main.py
